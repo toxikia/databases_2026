@@ -63,5 +63,18 @@ review: student_id, course_id
 
 
 
+##  часть 3. документирование нарушений
+
+| № | Ограничение | Выполняемый запрос (SQL) | Сообщение СУБД | Понятное сообщение для пользователя | Как исправить |
+|---|---|---|---|---|---|
+| 1 | CHECK | `INSERT INTO courses (title, teacher_id, price) VALUES ('Test', 1, -100);` | `violates check constraint "courses_price_check"` | Цена курса не может быть отрицательной. | Указать цену >= 0. |
+| 2 | FOREIGN KEY | `INSERT INTO enrollments (student_id, course_id) VALUES (9999, 1);` | `violates foreign key constraint "fk_enrollment_student"` | Нельзя записать на курс несуществующего студента. | Создать студента перед записью на курс. |
+| 3 | UNIQUE | `INSERT INTO users (email, ...) VALUES ('test@mail.com', ...);` (дважды) | `duplicate key value violates unique constraint "users_email_key"` | Пользователь с таким email уже зарегистрирован. | Использовать другой email. |
+| 4 | NOT NULL | `INSERT INTO courses (teacher_id, title) VALUES (1, NULL);` | `null value in column "title" violates not-null constraint` | Название курса обязательно для заполнения. | Указать название курса. |
+| 5 | PRIMARY KEY | `INSERT INTO users (user_id, ...) VALUES (1, ...);` | `duplicate key value violates unique constraint "users_pkey"` | Пользователь с таким ID уже существует. | Не указывать ID вручную (использовать SERIAL). |
+
+
+
+
 
 
