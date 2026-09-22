@@ -63,3 +63,18 @@ CREATE INDEX idx_enrollments_student ON enrollments(student_id);
 CREATE INDEX idx_enrollments_course ON enrollments(course_id);
 CREATE INDEX idx_reviews_student ON reviews(student_id);
 CREATE INDEX idx_reviews_course ON reviews(course_id);
+
+
+
+--8 таблтца платежей
+CREATE TABLE payments (
+    payments_id SERIAL PRIMARY KEY,
+    student_id INTEGER NUT NULL,
+    course_id INTEGER NUT NULL,
+    amount DECIMAL(10, 2) NOT NULL CHECK (amount>=0),
+    payment_date TIMESTAAMP DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(20) DEFAULT 'completed' CHECK (status IN('pending', 'completed', 'failed')),
+    CONSTRAINT fk_payment_student FOREIGN KEY (student_id) REFERENCES users(use_id) ON DELETE RESTRICT
+    CONSTRAINT fk_payment_course FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE RESTRICT
+);
+CREATE INDEX idx_payments_course_date ON payments(course_id, payment_date);
